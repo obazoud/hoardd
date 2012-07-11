@@ -33,9 +33,10 @@ class HoardD extends EventEmitter
     date  = new Date()
     now   = Math.round date.getTime() # node-graphite divides /1000 alread
 
-  push_metric: (prefix, value) ->
+  push_metric: (prefix, value, base) ->
+    base = base || @conf.graphiteBase
     try
-      metric = ["hoard.#{prefix}", value, @now()]
+      metric = ["#{base}.#{prefix}", value, @now()]
       @pending.push metric
       @cli.debug metric
     catch error
