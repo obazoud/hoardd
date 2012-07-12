@@ -54,13 +54,18 @@ start() {
 stop() {
 	echo -n $"Stopping $NAME daemon: "
     pid=$(ps aux | grep hoardd.js | grep node | awk '{print $2}')
-    kill $pid
-	RETVAL=$?
-    if [ $RETVAL -eq 0 ]; then
+    if [ "x$pid" != "x" ]; then
+        kill $pid
+	    RETVAL=$?
+        if [ $RETVAL -eq 0 ]; then
+            rm -f /var/lock/subsys/$NAME
+            echo_success
+        else
+            echo_failure
+        fi
+    elif [ -f /var/lock/subsys/$NAME ]; then
         rm -f /var/lock/subsys/$NAME
         echo_success
-    else
-        echo_failure
     fi
 	echo
     return $RETVAL
@@ -96,7 +101,8 @@ condrestart)
 	fi
 	;;
 status)
-	if [ -f /var/lock/subsys/$NAME ]; then
+    pid=$(ps aux | grep hoardd.js | grep node | awk '{print $2}')
+	if [[ -f /var/lock/subsys/$NAME && "x$pid" != "x" ]]; then
         echo "$NAME is running"
         exit 0
     else
