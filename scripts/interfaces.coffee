@@ -18,8 +18,8 @@ module.exports = (server) ->
       continue if line.match /lo:/ 
       regex = /(.+):(.*)/
       matched = line.match(regex)
-      interface = matched[1].trim()
+      interfaceNew = matched[1].trim()
       values = matched[2].trim().split /\s+/
       statObj = {}
       statObj[key] = values[i] for key, i in nameArray
-      server.push_metric "#{metricPrefix}.#{interface}.#{key}", value for key, value of statObj 
+      server.push_metric "#{metricPrefix}.#{interfaceNew}.#{key}", value for key, value of statObj 
