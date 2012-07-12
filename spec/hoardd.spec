@@ -1,5 +1,5 @@
 Name:           hoardd
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Hoardd is extensible daemon designed to collect server data and inject into Graphite/Carbon
 Group:          Applications/Internet
