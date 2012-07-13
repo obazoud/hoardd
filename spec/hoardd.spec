@@ -1,5 +1,5 @@
 Name:           hoardd
-Version:        0.1.1
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        Hoardd is extensible daemon designed to collect server data and inject into Graphite/Carbon
 Group:          Applications/Internet
@@ -30,6 +30,7 @@ Collect server statistics and send to graphite
 %{__install} -Dp -m0755 init/%{name} %{buildroot}%{_initrddir}/%{name}
 %{__install} -Dp -m0644 config.json.example  %{buildroot}%{_sysconfdir}/%{name}/config.js
 %{__install} -Dp -m0644 scripts/*.coffee %{buildroot}%{_sysconfdir}/%{name}/scripts
+%{__install} -Dp -m0644 scripts/*.js %{buildroot}%{_sysconfdir}/%{name}/scripts
 %{__mkdir_p} %{buildroot}%{_localstatedir}/lock/subsys
 touch %{buildroot}%{_localstatedir}/lock/subsys/%{name}
 %{__mkdir_p} %{buildroot}/usr/share/%{name}/node_modules
