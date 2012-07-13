@@ -20,7 +20,8 @@ module.exports = entry_point = () ->
     else
       Cli.fatal "Can't find a config file"
 
-    hoard = new Server conf, Cli
+    cDir = Path.dirname(options.config)
+    hoard = new Server conf, cDir, Cli
     hoard.load_scripts()
 
     hoard.on 'run', hoard.run_scripts

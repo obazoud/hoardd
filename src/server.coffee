@@ -6,7 +6,7 @@ Fs           = require 'fs'
 
 class HoardD extends EventEmitter
   
-  constructor: (@conf, @cli) ->
+  constructor: (@conf, @cDir, @cli) ->
     @sPath = @conf.scriptPath
     @fqdn = @conf.fqdn.split('.').join('_')
     @samplesRun = 0
