@@ -6,7 +6,7 @@ Path  = require 'path'
 module.exports = (server) ->
   run = () ->
     # This script needs configuration
-    if Path.existsSync
+    if Fs.existsSync
       confPath     = Path.join server.cDir, 'riak.json'
       try
         conf         = JSON.parse(Fs.readFileSync(confPath, 'utf-8'))
