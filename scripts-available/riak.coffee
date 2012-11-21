@@ -7,11 +7,11 @@ module.exports = (server) ->
   run = () ->
     # This script needs configuration
     if Fs.existsSync
-      confPath     = Path.join server.cDir, 'riak.json'
+      confPath     = Path.join server.sPath, 'riak.json'
       try
         conf         = JSON.parse(Fs.readFileSync(confPath, 'utf-8'))
       catch error
-        server.cli.debug "Error reading #{server.cDir}/riak.json"
+        server.cli.debug "Error reading #{server.sPath}/riak.json"
     else
       server.cli.fatal "Config file required for riak.coffee"
     
