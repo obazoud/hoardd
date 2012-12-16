@@ -9,10 +9,19 @@ module.exports = (server) ->
     configFile   = Fs.readFileSync confPath, 'utf-8'
     conf         = JSON.parse configFile
     stats = ['ack', 'deliver', 'deliver_get', 'deliver_no_ack', 'publish', 'redeliver', 'return_unroutable']
+    queue_totals = ['messages', 'messages_ready', 'messages_unacknowledged']
+
     send_stat = (stat, data) ->
       try
-        server.push_metric "rabbitmq.#{stat}.count", data.message_stats[stat]
-        server.push_metric "rabbitmq.#{stat}.rate", data.message_stats["#{stat}_details"].rate
+        server.push_metric "rabbitmq.#{stat}.count", data.message_stats[stat] if data.message_stats[stat]
+        server.push_metric "rabbitmq.#{stat}.rate", data.message_stats["#{stat}_details"].rate if data.message_stats["#{stat}_details"]
+      catch error
+       server.cli.debug error
+
+    send_queue_totals = (queue, data) ->
+      try
+        server.push_metric "rabbitmq.#{queue}.count", data.queue_totals[queue]
+        server.push_metric "rabbitmq.#{queue}.rate", data.queue_totals["#{queue}_details"].rate if data.queue_totals["#{queue}_details"]
       catch error
        server.cli.debug error
       
@@ -20,3 +29,4 @@ module.exports = (server) ->
       {username: conf.username, password: conf.password}).on 'complete', (data) ->
       rmq_data = eval data
       send_stat stat, rmq_data for stat in stats
+      send_queue_totals queue, rmq_data for queue in queue_totals
