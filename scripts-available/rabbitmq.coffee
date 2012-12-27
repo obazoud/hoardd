@@ -35,10 +35,10 @@ module.exports = (server) ->
       
     send_queue = (queue) ->
       try
-        server.push_metric "rabbitmq.queue.#{queue.name}.#{q}", queue["#{q}"] for q in queues
-        server.push_metric "rabbitmq.queue.#{queue.name}.slave_nodes.count", queue["slave_nodes"].length
-        server.push_metric "rabbitmq.queue.#{queue.name}.#{q}.count", queue["#{q}"] for q in queue_totals
-        server.push_metric "rabbitmq.queue.#{queue.name}.#{q}.rate", queue["#{q}_details"].rate for q in queue_totals
+        server.push_metric "rabbitmq.queues.#{queue.name}.#{q}", queue["#{q}"] for q in queues
+        server.push_metric "rabbitmq.queues.#{queue.name}.slave_nodes.count", queue["slave_nodes"].length
+        server.push_metric "rabbitmq.queues.#{queue.name}.#{q}.count", queue["#{q}"] for q in queue_totals
+        server.push_metric "rabbitmq.queues.#{queue.name}.#{q}.rate", queue["#{q}_details"].rate for q in queue_totals
       catch error
        server.cli.debug error
       
