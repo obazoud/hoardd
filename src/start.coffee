@@ -10,7 +10,7 @@ module.exports = entry_point = () ->
   Cli.enable 'version'
   Cli.enable 'status'
   Cli.setUsage 'node start.js -c <config json>'
-  Cli.setApp 'HoardDaemon', '0.1.0'
+  Cli.setApp 'HoardDaemon', '0.1.0-obazoud-develop'
   Cli.parse
     'config': ['c', 'Configuration file path', 'path', './config.json']
 
