@@ -8,6 +8,7 @@ Fs.existsSync = Fs.existsSync or require("path"). existsSync
 # Command Line Setup
 module.exports = entry_point = () ->
   Cli.enable 'version'
+  Cli.enable 'status'
   Cli.setUsage 'node start.js -c <config json>'
   Cli.setApp 'HoardDaemon', '0.1.0'
   Cli.parse
