@@ -8,6 +8,7 @@ module.exports = (server) ->
     confPath     = Path.join server.sPath, 'rabbitmq.json'
     configFile   = Fs.readFileSync confPath, 'utf-8'
     conf         = JSON.parse configFile
+    excludes     = new RegExp(conf.excludes) if conf.excludes
     stats = ['ack', 'deliver', 'deliver_get', 'deliver_no_ack', 'publish', 'redeliver', 'return_unroutable']
     queue_totals = ['messages', 'messages_ready', 'messages_unacknowledged']
     nodes = ['mem_ets', 'mem_binary', 'mem_proc', 'mem_proc_used', 'mem_atom', 'mem_atom_used', 'mem_code', 'fd_used', 'fd_total', 'sockets_used', 'sockets_total', 'mem_used', 'mem_limit', 'mem_alarm', 'disk_free_limit', 'disk_free', 'disk_free_alarm', 'proc_used', 'proc_total', 'uptime', 'run_queue', 'processors']
@@ -35,10 +36,13 @@ module.exports = (server) ->
       
     send_queue = (queue) ->
       try
-        server.push_metric "rabbitmq.queues.#{queue.name}.#{q}", queue["#{q}"] for q in queues
-        server.push_metric "rabbitmq.queues.#{queue.name}.slave_nodes.count", queue["slave_nodes"].length
-        server.push_metric "rabbitmq.queues.#{queue.name}.#{q}.count", queue["#{q}"] for q in queue_totals
-        server.push_metric "rabbitmq.queues.#{queue.name}.#{q}.rate", queue["#{q}_details"].rate for q in queue_totals
+        if excludes && queue.name.match(excludes)
+          server.cli.debug "Exclude #{queue.name}"
+        else
+          server.push_metric "rabbitmq.queues.#{queue.name}.#{q}", queue["#{q}"] for q in queues
+          server.push_metric "rabbitmq.queues.#{queue.name}.slave_nodes.count", queue["slave_nodes"].length
+          server.push_metric "rabbitmq.queues.#{queue.name}.#{q}.count", queue["#{q}"] for q in queue_totals
+          server.push_metric "rabbitmq.queues.#{queue.name}.#{q}.rate", queue["#{q}_details"].rate for q in queue_totals
       catch error
        server.cli.debug error
       
