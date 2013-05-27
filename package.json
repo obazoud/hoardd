@@ -4,12 +4,12 @@
   "description": "Hoard the data to graphite",
   "author": "Jose de Paula Eufrasio Junior  <jose.junior@gmail.com>",
   "dependencies": {
-    "cli": "0.4.x",
-    "coffee-script": "1.2.x",
-    "redis": "0.7.x",
-    "graphite": "0.0.x",
-    "mysql":"0.9.x",
-    "restler":"2.x"
+    "cli": "0.4.4-2",
+    "coffee-script": "1.2.0",
+    "redis": "0.7.3",
+    "graphite": "0.0.6",
+    "mysql":"0.9.6",
+    "restler":"2.0.1"
   },
   "engine": "node >= 0.8.x"
 }
