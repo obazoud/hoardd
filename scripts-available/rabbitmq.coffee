@@ -49,15 +49,18 @@ module.exports = (server) ->
     Rest.get("#{conf.host}:#{conf.port}/api/overview",
       {username: conf.username, password: conf.password}).on 'complete', (data) ->
       rmq_data = eval data
-      send_stat stat, rmq_data for stat in stats
-      send_queue_totals queue, rmq_data for queue in queue_totals
+      if rmq_data?
+        send_stat stat, rmq_data for stat in stats
+        send_queue_totals queue, rmq_data for queue in queue_totals
 
     Rest.get("#{conf.host}:#{conf.port}/api/nodes",
       {username: conf.username, password: conf.password}).on 'complete', (data) ->
       rmq_data = eval data
-      send_nodes node, rmq_data for node in nodes
+      if rmq_data?
+        send_nodes node, rmq_data for node in nodes
 
     Rest.get("#{conf.host}:#{conf.port}/api/queues",
       {username: conf.username, password: conf.password}).on 'complete', (data) ->
       rmq_data = eval data
-      send_queue queue for queue in rmq_data
+      if rmq_data?
+        send_queue queue for queue in rmq_data
